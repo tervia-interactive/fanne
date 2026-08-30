@@ -1,376 +1,411 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fanne OS | Base System</title>
+    <title>Fanne Linux | The Free Base</title>
     <link rel="icon" type="image/png" href="branding/only_fanne_logo.png">
     <style>
-        /* Tema Técnico / Brutalista Moderno (2026) */
+        /* Classic, Documentation-Style CSS - No AI Slop */
         :root {
-            --bg-main: #09090b;
-            --bg-panel: #121214;
-            --bg-panel-hover: #1c1c1f;
-            --fanne-green: #12ad2b;
-            --fanne-green-dim: rgba(18, 173, 43, 0.15);
-            --text-primary: #f4f4f5;
-            --text-muted: #a1a1aa;
-            --border-subtle: #27272a;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
-            --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+            --bg-color: #ffffff;
+            --text-color: #222222;
+            --sidebar-bg: #f4f5f6;
+            --link-color: #0056b3;
+            --border-color: #dddddd;
+            --code-bg: #f8f9fa;
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            background-color: var(--bg-main);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        /* Tipografia */
-        h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
-        p { color: var(--text-muted); }
-        .mono { font-family: var(--font-mono); }
-
-        /* Layout Base */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Navegação */
-        nav {
-            border-bottom: 1px solid var(--border-subtle);
-            background: rgba(9, 9, 11, 0.8);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-inner {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 70px;
+            min-height: 100vh;
         }
 
-        .brand img { height: 28px; display: block; }
-        
-        .sys-status {
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .brand {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            background: var(--bg-panel);
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .sys-status::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--fanne-green);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--fanne-green);
-        }
-
-        /* Header / Hero */
-        .hero {
-            padding: 6rem 0;
-            position: relative;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            top: 20%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background-image: url('branding/only_fanne_logo.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.03;
-            pointer-events: none;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            max-width: 800px;
-        }
-
-        .hero h1 span {
-            color: var(--fanne-green);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            max-width: 600px;
+            gap: 10px;
             margin-bottom: 2rem;
-        }
-
-        /* Grade de Arquitetura */
-        .architecture-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 5rem;
-        }
-
-        .panel {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-subtle);
-            padding: 2rem;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .panel:hover {
-            background: var(--bg-panel-hover);
-        }
-
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid var(--border-subtle);
             padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .panel-header h3 {
-            font-size: 1.1rem;
-            color: var(--text-primary);
+        .brand img {
+            height: 40px;
         }
 
-        .panel-header span {
-            font-size: 0.75rem;
-            color: var(--fanne-green);
-            background: var(--fanne-green-dim);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
+        .brand h1 {
+            font-size: 1.2rem;
+            font-weight: bold;
         }
 
-        /* Terminal Block */
-        .terminal {
-            background: #000;
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 4rem 0;
-            font-size: 0.9rem;
-            overflow-x: auto;
-        }
-
-        .terminal-header {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .terminal-header .dot {
-            width: 12px; height: 12px; border-radius: 50%;
-            background: #333;
-        }
-
-        .prompt { color: var(--fanne-green); margin-right: 0.5rem; }
-        .output { color: var(--text-muted); display: block; margin-top: 0.5rem; margin-bottom: 1.5rem; }
-        
-        /* Tabela de Especificações */
-        .specs-section {
-            margin-bottom: 5rem;
-        }
-
-        .specs-section h2 {
+        .lang-selector {
             margin-bottom: 2rem;
-            font-size: 2rem;
         }
 
-        .spec-row {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            padding: 1.5rem 0;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .spec-row:first-of-type {
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .spec-key {
-            font-family: var(--font-mono);
+        .lang-selector select {
+            width: 100%;
+            padding: 0.5rem;
             font-size: 0.9rem;
-            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            background: #fff;
         }
 
-        .spec-value {
-            color: var(--text-muted);
+        .nav-links {
+            list-style: none;
         }
 
-        /* Footer */
-        footer {
-            border-top: 1px solid var(--border-subtle);
-            padding: 4rem 0;
+        .nav-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-color);
+            text-decoration: underline;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 280px;
+            padding: 3rem 5rem;
+            max-width: 1100px;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            color: #111;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        ul {
+            margin-bottom: 1.5rem;
+            margin-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .footer {
             margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: #666;
         }
 
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-
-        .footer-brand img {
-            height: 32px;
-            opacity: 0.5;
-            transition: opacity 0.2s;
-        }
-
-        .footer-brand img:hover {
-            opacity: 1;
-        }
-
-        .footer-meta {
-            text-align: right;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .spec-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 1rem 0; }
-            .sys-status { display: none; }
+        /* Responsive */
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .main-content { margin-left: 0; padding: 2rem; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="container nav-inner">
-            <div class="brand">
-                <img src="branding/fanne_white.png" alt="Fanne OS">
-            </div>
-            <div class="sys-status mono">
-                BUILD: 2026.Q3 | CORE_SIZE: 520MB
-            </div>
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="branding/fanne_black.png" alt="Fanne Linux Logo">
+            <h1>Fanne Linux</h1>
         </div>
-    </nav>
+        
+        <div class="lang-selector">
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="pt">Português</option>
+            </select>
+        </div>
 
-    <main class="container">
-        <section class="hero">
-            <h1>Menos abstração.<br><span>520MB de controle puro.</span></h1>
-            <p>O Fanne é uma fundação de sistema operacional desenvolvida pela Tervia Interactive. Sem interfaces gráficas forçadas, sem bloatware em background. Apenas o hardware e as suas decisões.</p>
-        </section>
+        <ul class="nav-links">
+            <li><a href="#philosophy" data-i18n="nav_philosophy">Philosophy & Freedom</a></li>
+            <li><a href="#base-system" data-i18n="nav_base">The 520MB Foundation</a></li>
+            <li><a href="#user-space" data-i18n="nav_userspace">User Space Control</a></li>
+            <li><a href="#kernel" data-i18n="nav_kernel">Kernel Architecture</a></li>
+            <li><a href="#repositories" data-i18n="nav_repos">Repositories & Source</a></li>
+        </ul>
+    </aside>
 
-        <section class="architecture-grid">
-            <div class="panel">
-                <div class="panel-header">
-                    <h3 class="mono">/boot & Init</h3>
-                    <span class="mono">CORE</span>
-                </div>
-                <p>Processo de inicialização estritamente linear. O sistema levanta apenas os daemons definidos pelo usuário no arquivo de configuração base. Nada roda escondido; se está na memória, foi você quem chamou.</p>
-            </div>
-            
-            <div class="panel">
-                <div class="panel-header">
-                    <h3 class="mono">Ambiente TTY</h3>
-                    <span class="mono">INTERFACE</span>
-                </div>
-                <p>O Fanne não possui servidor de display (X11/Wayland) pré-instalado. Você recebe um console POSIX limpo. Ideal para servidores, sistemas embarcados ou para montar sua própria stack gráfica (Window Manager) do zero.</p>
-            </div>
-
-            <div class="panel">
-                <div class="panel-header">
-                    <h3 class="mono">Gestão de Pacotes</h3>
-                    <span class="mono">SYS</span>
-                </div>
-                <p>Gerenciamento de dependências cirúrgico, sem instalar pacotes "recomendados" automaticamente. O repositório oficial da Tervia garante binários otimizados que respeitam o limite de footprint da base.</p>
-            </div>
-        </section>
-
-        <section class="terminal mono">
-            <div class="terminal-header">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-            <div>
-                <span class="prompt">root@fanne:~#</span> df -h /
-                <span class="output">
-                Filesystem      Size  Used Avail Use% Mounted on<br>
-                /dev/sda1       10G   520M  9.5G   5% /
-                </span>
+    <main class="main-content">
+        <!-- Philosophy Section -->
+        <section id="philosophy">
+            <h2 data-i18n="title_philosophy">Philosophy: Total User Freedom</h2>
+            <div data-i18n="content_philosophy">
+                <p>Fanne Linux is built upon a single, uncompromising principle: the user must have absolute control over their machine. In an era where operating systems increasingly act as walled gardens—forcing background services, telemetry, and pre-determined graphical environments upon the user—Fanne Linux steps back. We provide the structural foundation; you build the house.</p>
                 
-                <span class="prompt">root@fanne:~#</span> uname -r
-                <span class="output">Fanne-Core-6.x-x86_64-Tervia</span>
-
-                <span class="prompt">root@fanne:~#</span> free -m
-                <span class="output">
-                              total        used        free      shared  buff/cache   available<br>
-                Mem:           8192          64        7980           0         148        8002
-                </span>
+                <p>We do not dictate which init system you must use. We do not force a specific desktop environment. Fanne Linux assumes that the person installing the system is a competent administrator who knows exactly what their hardware needs. If a package is not explicitly requested by you, it will not exist on your drive.</p>
+                
+                <h3>The Agnostic Approach</h3>
+                <p>Most modern distributions are heavily coupled to specific ecosystems. Fanne Linux breaks this dependency chain. By providing a pristine, un-opinionated base, you are free to bootstrap a system that uses systemd, OpenRC, runit, or s6. The choice of how PID 1 handles your services is your responsibility and your privilege.</p>
+                
+                <p>This freedom extends to networking and audio. Whether you prefer NetworkManager or writing manual wpa_supplicant configurations, whether you use PipeWire, PulseAudio, or pure ALSA, Fanne Linux will not interfere. There are no automated scripts overriding your manual configurations.</p>
             </div>
         </section>
 
-        <section class="specs-section">
-            <h2>Anatomia do Sistema</h2>
-            
-            <div class="spec-row">
-                <div class="spec-key">Tamanho Padrão (ISO/Instalação)</div>
-                <div class="spec-value">Exatos 520 MB (Pode variar ligeiramente dependendo do particionamento de swap e firmware de rede incluso).</div>
-            </div>
-
-            <div class="spec-row">
-                <div class="spec-key">Coreutils & Userland</div>
-                <div class="spec-value">Implementação enxuta, fornecendo as ferramentas GNU essenciais (ls, grep, awk, sed) para administração do sistema sem duplicidade de binários.</div>
-            </div>
-
-            <div class="spec-row">
-                <div class="spec-key">Sistemas de Arquivos</div>
-                <div class="spec-value">Suporte nativo a ext4 (padrão) e ferramentas básicas para montagem de partições FAT32/vfat no boot (EFI).</div>
-            </div>
-
-            <div class="spec-row">
-                <div class="spec-key">Documentação</div>
-                <div class="spec-value">A documentação da API e as man-pages da versão 2026 estão sendo unificadas internamente pela Tervia Interactive e estarão disponíveis no repositório final. O sistema acompanha um guia de `help` offline básico.</div>
-            </div>
-            
-            <div class="spec-row">
-                <div class="spec-key">Desenvolvedor</div>
-                <div class="spec-value">Tervia Interactive (Ano Base de Desenvolvimento: 2026).</div>
+        <!-- The Base System Section -->
+        <section id="base-system">
+            <h2 data-i18n="title_base">The 520MB Foundation</h2>
+            <div data-i18n="content_base">
+                <p>The Fanne Linux core installation image is strictly maintained at roughly 520MB. This size is not a marketing gimmick to claim we are the smallest distribution; it is a carefully calculated mathematical boundary that contains exactly what is required to boot a POSIX-compliant environment and establish a network connection—and absolutely nothing else.</p>
+                
+                <p>Within this 520MB footprint, you will find a compiled Linux kernel, the essential GNU core utilities (or equivalent lightweight alternatives depending on the build), a package manager capable of resolving basic dependency trees, and standard shell interfaces (like bash or ash). There are no pre-installed web browsers, no graphic display servers (X11/Wayland), and no superfluous libraries.</p>
+                
+                <h3>Why 520MB?</h3>
+                <p>This size ensures that the base system can be loaded entirely into RAM on almost any machine manufactured in the last two decades. It provides a clean slate. When you run the `lsmod` or `htop` command on a fresh Fanne Linux installation, you will see a near-empty canvas. The memory footprint is negligible, meaning 99% of your hardware's resources are reserved strictly for the applications you choose to deploy.</p>
             </div>
         </section>
+
+        <!-- User Space Section -->
+        <section id="user-space">
+            <h2 data-i18n="title_userspace">User Space Control & Modularity</h2>
+            <div data-i18n="content_userspace">
+                <p>The boundary between kernel space and user space in Fanne Linux is treated with extreme respect. We believe that user space applications should never assume privileges or integrations that the system administrator has not explicitly granted. This modularity means that replacing core components is not a hack, but a supported feature.</p>
+                
+                <ul>
+                    <li><strong>Display Servers:</strong> You can install X.org for legacy support, transition to a modern Wayland compositor (like Sway or Hyprland), or run purely in a TTY environment for headless servers. Fanne Linux provides the binaries; you write the config files.</li>
+                    <li><strong>File Systems:</strong> While the base may boot using standard ext4, Fanne Linux fully supports transitioning your root to ZFS, Btrfs, or XFS. We provide the necessary hooks for initramfs generation without locking you into a specific layout.</li>
+                    <li><strong>Security Profiles:</strong> AppArmor and SELinux are supported at the kernel level, but neither is enforced by default. The administrator determines the threat model and implements the access controls accordingly.</li>
+                </ul>
+                
+                <p>This level of modularity requires reading manuals and understanding the underlying technologies. Fanne Linux does not hold your hand with GUI installers. The installation process itself is a learning experience, typically executed from a live environment using a series of root commands, partitioning tools, and chroot environments.</p>
+            </div>
+        </section>
+
+        <!-- Kernel Section -->
+        <section id="kernel">
+            <h2 data-i18n="title_kernel">Kernel Architecture</h2>
+            <div data-i18n="content_kernel">
+                <p>The Fanne Linux kernel is compiled with a focus on stability, hardware compatibility, and low latency. However, true to our philosophy of freedom, the provided kernel is merely a starting point. We strongly encourage users to compile their own kernels tailored to their specific CPU architecture and peripheral requirements.</p>
+                
+                <p>We provide the complete source tree and straightforward Makefile configurations within our repositories. Whether you want to patch the kernel for real-time (RT) processing, strip out drivers for hardware you don't own to reduce boot times to milliseconds, or experiment with experimental schedulers, Fanne Linux provides a frictionless environment for kernel development.</p>
+                
+                <p>To compile your own kernel on Fanne Linux, you merely need to pull the source, configure your `make menuconfig`, and compile. The system will not attempt to overwrite your custom `vmlinuz` during standard system updates unless explicitly instructed to do so via your package manager configuration.</p>
+            </div>
+        </section>
+
+        <!-- Repository Section -->
+        <section id="repositories">
+            <h2 data-i18n="title_repos">Repositories & Source Availability</h2>
+            <div data-i18n="content_repos">
+                <p>Transparency is mandatory. The entirety of Fanne Linux—from the build scripts that generate the 520MB ISO to the package recipes—is hosted openly on our repositories. You can inspect every line of code, every patch, and every configuration file before it touches your hardware.</p>
+                
+                <p>Our repositories are split into clear logical categories:</p>
+                <ul>
+                    <li><strong>Core:</strong> The absolute essentials required for a booting system (Kernel, libc, coreutils, package manager).</li>
+                    <li><strong>Extra:</strong> Standard software that is commonly used but not strictly necessary for boot (Xorg, Wayland, Python, network managers).</li>
+                    <li><strong>Community:</strong> User-submitted build recipes and software packages, audited for security but maintained by the Fanne Linux community at large.</li>
+                </ul>
+                
+                <p>If you disagree with how a package is compiled in the official repositories, Fanne Linux provides a ports-like system, allowing you to fetch the source, modify the build flags (CFLAGS/CXXFLAGS), and compile the software locally optimized for your exact machine architecture.</p>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2026 Fanne Linux Project. See the repository for full source code and documentation.</p>
+        </footer>
     </main>
 
-    <footer>
-        <div class="container footer-content">
-            <div class="footer-brand">
-                <img src="branding/fanne_white.png" alt="Fanne">
-            </div>
-            <div class="footer-meta mono">
-                &copy; 2026 Tervia Interactive.<br>
-                Fanne OS is an independent project.
-            </div>
-        </div>
-    </footer>
+    <script>
+        // Massive i18n Dictionary for detailed content
+        const i18n = {
+            en: {
+                nav_philosophy: "Philosophy & Freedom",
+                nav_base: "The 520MB Foundation",
+                nav_userspace: "User Space Control",
+                nav_kernel: "Kernel Architecture",
+                nav_repos: "Repositories & Source",
+                
+                title_philosophy: "Philosophy: Total User Freedom",
+                content_philosophy: `
+                    <p>Fanne Linux is built upon a single, uncompromising principle: the user must have absolute control over their machine. In an era where operating systems increasingly act as walled gardens—forcing background services, telemetry, and pre-determined graphical environments upon the user—Fanne Linux steps back. We provide the structural foundation; you build the house.</p>
+                    <p>We do not dictate which init system you must use. We do not force a specific desktop environment. Fanne Linux assumes that the person installing the system is a competent administrator who knows exactly what their hardware needs. If a package is not explicitly requested by you, it will not exist on your drive.</p>
+                    <h3>The Agnostic Approach</h3>
+                    <p>Most modern distributions are heavily coupled to specific ecosystems. Fanne Linux breaks this dependency chain. By providing a pristine, un-opinionated base, you are free to bootstrap a system that uses systemd, OpenRC, runit, or s6. The choice of how PID 1 handles your services is your responsibility and your privilege.</p>
+                    <p>This freedom extends to networking and audio. Whether you prefer NetworkManager or writing manual wpa_supplicant configurations, whether you use PipeWire, PulseAudio, or pure ALSA, Fanne Linux will not interfere. There are no automated scripts overriding your manual configurations.</p>
+                `,
 
+                title_base: "The 520MB Foundation",
+                content_base: `
+                    <p>The Fanne Linux core installation image is strictly maintained at roughly 520MB. This size is not a marketing gimmick to claim we are the smallest distribution; it is a carefully calculated mathematical boundary that contains exactly what is required to boot a POSIX-compliant environment and establish a network connection—and absolutely nothing else.</p>
+                    <p>Within this 520MB footprint, you will find a compiled Linux kernel, the essential GNU core utilities (or equivalent lightweight alternatives depending on the build), a package manager capable of resolving basic dependency trees, and standard shell interfaces (like bash or ash). There are no pre-installed web browsers, no graphic display servers (X11/Wayland), and no superfluous libraries.</p>
+                    <h3>Why 520MB?</h3>
+                    <p>This size ensures that the base system can be loaded entirely into RAM on almost any machine manufactured in the last two decades. It provides a clean slate. When you run the <code>lsmod</code> or <code>htop</code> command on a fresh Fanne Linux installation, you will see a near-empty canvas. The memory footprint is negligible, meaning 99% of your hardware's resources are reserved strictly for the applications you choose to deploy.</p>
+                `,
+
+                title_userspace: "User Space Control & Modularity",
+                content_userspace: `
+                    <p>The boundary between kernel space and user space in Fanne Linux is treated with extreme respect. We believe that user space applications should never assume privileges or integrations that the system administrator has not explicitly granted. This modularity means that replacing core components is not a hack, but a supported feature.</p>
+                    <ul>
+                        <li><strong>Display Servers:</strong> You can install X.org for legacy support, transition to a modern Wayland compositor (like Sway or Hyprland), or run purely in a TTY environment for headless servers. Fanne Linux provides the binaries; you write the config files.</li>
+                        <li><strong>File Systems:</strong> While the base may boot using standard ext4, Fanne Linux fully supports transitioning your root to ZFS, Btrfs, or XFS. We provide the necessary hooks for initramfs generation without locking you into a specific layout.</li>
+                        <li><strong>Security Profiles:</strong> AppArmor and SELinux are supported at the kernel level, but neither is enforced by default. The administrator determines the threat model and implements the access controls accordingly.</li>
+                    </ul>
+                    <p>This level of modularity requires reading manuals and understanding the underlying technologies. Fanne Linux does not hold your hand with GUI installers. The installation process itself is a learning experience, typically executed from a live environment using a series of root commands, partitioning tools, and chroot environments.</p>
+                `,
+
+                title_kernel: "Kernel Architecture",
+                content_kernel: `
+                    <p>The Fanne Linux kernel is compiled with a focus on stability, hardware compatibility, and low latency. However, true to our philosophy of freedom, the provided kernel is merely a starting point. We strongly encourage users to compile their own kernels tailored to their specific CPU architecture and peripheral requirements.</p>
+                    <p>We provide the complete source tree and straightforward Makefile configurations within our repositories. Whether you want to patch the kernel for real-time (RT) processing, strip out drivers for hardware you don't own to reduce boot times to milliseconds, or experiment with experimental schedulers, Fanne Linux provides a frictionless environment for kernel development.</p>
+                    <p>To compile your own kernel on Fanne Linux, you merely need to pull the source, configure your <code>make menuconfig</code>, and compile. The system will not attempt to overwrite your custom <code>vmlinuz</code> during standard system updates unless explicitly instructed to do so via your package manager configuration.</p>
+                `,
+
+                title_repos: "Repositories & Source Availability",
+                content_repos: `
+                    <p>Transparency is mandatory. The entirety of Fanne Linux—from the build scripts that generate the 520MB ISO to the package recipes—is hosted openly on our repositories. You can inspect every line of code, every patch, and every configuration file before it touches your hardware.</p>
+                    <p>Our repositories are split into clear logical categories:</p>
+                    <ul>
+                        <li><strong>Core:</strong> The absolute essentials required for a booting system (Kernel, libc, coreutils, package manager).</li>
+                        <li><strong>Extra:</strong> Standard software that is commonly used but not strictly necessary for boot (Xorg, Wayland, Python, network managers).</li>
+                        <li><strong>Community:</strong> User-submitted build recipes and software packages, audited for security but maintained by the Fanne Linux community at large.</li>
+                    </ul>
+                    <p>If you disagree with how a package is compiled in the official repositories, Fanne Linux provides a ports-like system, allowing you to fetch the source, modify the build flags (CFLAGS/CXXFLAGS), and compile the software locally optimized for your exact machine architecture.</p>
+                `
+            },
+            pt: {
+                nav_philosophy: "Filosofia & Liberdade",
+                nav_base: "A Fundação de 520MB",
+                nav_userspace: "Controle do User Space",
+                nav_kernel: "Arquitetura do Kernel",
+                nav_repos: "Repositórios & Fontes",
+
+                title_philosophy: "Filosofia: Liberdade Total do Usuário",
+                content_philosophy: `
+                    <p>O Fanne Linux é construído sob um princípio único e intransigente: o usuário deve ter controle absoluto sobre sua máquina. Em uma era onde os sistemas operacionais atuam cada vez mais como jardins murados — forçando serviços em segundo plano, telemetria e ambientes gráficos pré-determinados — o Fanne Linux dá um passo atrás. Nós fornecemos a fundação estrutural; você constrói a casa.</p>
+                    <p>Nós não ditamos qual sistema de inicialização (init) você deve usar. Não forçamos um ambiente de desktop específico. O Fanne Linux assume que a pessoa instalando o sistema é um administrador competente que sabe exatamente do que seu hardware precisa. Se um pacote não for explicitamente solicitado por você, ele não existirá no seu disco.</p>
+                    <h3>A Abordagem Agnóstica</h3>
+                    <p>A maioria das distribuições modernas é fortemente acoplada a ecossistemas específicos. O Fanne Linux quebra essa cadeia de dependências. Ao fornecer uma base limpa e sem opiniões, você é livre para construir um sistema que use systemd, OpenRC, runit ou s6. A escolha de como o PID 1 lida com seus serviços é sua responsabilidade e seu privilégio.</p>
+                    <p>Essa liberdade se estende à rede e ao áudio. Quer você prefira o NetworkManager ou escrever configurações manuais do wpa_supplicant, quer use PipeWire, PulseAudio ou ALSA puro, o Fanne Linux não irá interferir. Não há scripts automatizados sobrescrevendo suas configurações manuais.</p>
+                `,
+
+                title_base: "A Fundação de 520MB",
+                content_base: `
+                    <p>A imagem de instalação central do Fanne Linux é rigorosamente mantida em aproximadamente 520MB. Esse tamanho não é um truque de marketing para afirmar que somos a menor distribuição; é uma fronteira matemática cuidadosamente calculada que contém exatamente o necessário para iniciar um ambiente compatível com POSIX e estabelecer uma conexão de rede — e absolutamente nada mais.</p>
+                    <p>Dentro dessa pegada de 520MB, você encontrará um kernel Linux compilado, os utilitários principais do GNU (ou alternativas leves equivalentes, dependendo da build), um gerenciador de pacotes capaz de resolver árvores básicas de dependência e interfaces de shell padrão (como bash ou ash). Não há navegadores web pré-instalados, nem servidores de exibição gráfica (X11/Wayland), nem bibliotecas supérfluas.</p>
+                    <h3>Por que 520MB?</h3>
+                    <p>Esse tamanho garante que o sistema base possa ser carregado inteiramente na RAM em quase qualquer máquina fabricada nas últimas duas décadas. Ele fornece uma tela em branco. Quando você executa o comando <code>lsmod</code> ou <code>htop</code> em uma instalação limpa do Fanne Linux, verá uma tela quase vazia. O uso de memória é insignificante, o que significa que 99% dos recursos do seu hardware são reservados estritamente para as aplicações que você escolher implantar.</p>
+                `,
+
+                title_userspace: "Controle do User Space & Modularidade",
+                content_userspace: `
+                    <p>A fronteira entre o kernel space e o user space no Fanne Linux é tratada com extremo respeito. Acreditamos que aplicações no espaço do usuário nunca devem assumir privilégios ou integrações que o administrador do sistema não tenha concedido explicitamente. Essa modularidade significa que substituir componentes essenciais não é uma gambiarra, mas um recurso suportado nativamente.</p>
+                    <ul>
+                        <li><strong>Servidores de Exibição:</strong> Você pode instalar o X.org para suporte legado, migrar para um compositor Wayland moderno (como Sway ou Hyprland) ou rodar puramente em um ambiente TTY para servidores headless. O Fanne Linux fornece os binários; você escreve os arquivos de configuração.</li>
+                        <li><strong>Sistemas de Arquivos:</strong> Embora a base possa iniciar usando ext4 padrão, o Fanne Linux suporta totalmente a transição da sua raiz para ZFS, Btrfs ou XFS. Fornecemos os hooks necessários para geração do initramfs sem prendê-lo a um layout específico.</li>
+                        <li><strong>Perfis de Segurança:</strong> AppArmor e SELinux são suportados no nível do kernel, mas nenhum é imposto por padrão. O administrador determina o modelo de ameaças e implementa os controles de acesso de acordo.</li>
+                    </ul>
+                    <p>Esse nível de modularidade exige leitura de manuais e compreensão das tecnologias subjacentes. O Fanne Linux não segura sua mão com instaladores GUI. O processo de instalação em si é uma experiência de aprendizado, tipicamente executada a partir de um ambiente live usando uma série de comandos root, ferramentas de particionamento e ambientes chroot.</p>
+                `,
+
+                title_kernel: "Arquitetura do Kernel",
+                content_kernel: `
+                    <p>O kernel do Fanne Linux é compilado com foco em estabilidade, compatibilidade de hardware e baixa latência. No entanto, fiel à nossa filosofia de liberdade, o kernel fornecido é meramente um ponto de partida. Encorajamos fortemente os usuários a compilarem seus próprios kernels, adaptados à arquitetura específica de sua CPU e aos requisitos de seus periféricos.</p>
+                    <p>Nós fornecemos a árvore de código-fonte completa e configurações diretas de Makefile em nossos repositórios. Se você deseja aplicar patches no kernel para processamento em tempo real (RT), remover drivers de hardware que não possui para reduzir o tempo de boot para milissegundos, ou testar agendadores experimentais, o Fanne Linux fornece um ambiente sem atritos para o desenvolvimento do kernel.</p>
+                    <p>Para compilar seu próprio kernel no Fanne Linux, você só precisa baixar o código-fonte, configurar seu <code>make menuconfig</code> e compilar. O sistema não tentará sobrescrever seu <code>vmlinuz</code> customizado durante atualizações padrão do sistema, a menos que seja explicitamente instruído a fazê-lo através da configuração do seu gerenciador de pacotes.</p>
+                `,
+
+                title_repos: "Repositórios & Disponibilidade do Código",
+                content_repos: `
+                    <p>Transparência é obrigatória. A totalidade do Fanne Linux — desde os scripts de build que geram a ISO de 520MB até as receitas de pacotes — é hospedada abertamente em nossos repositórios. Você pode inspecionar cada linha de código, cada patch e cada arquivo de configuração antes que ele toque no seu hardware.</p>
+                    <p>Nossos repositórios são divididos em categorias lógicas claras:</p>
+                    <ul>
+                        <li><strong>Core:</strong> Os elementos absolutamente essenciais necessários para um sistema inicializável (Kernel, libc, coreutils, gerenciador de pacotes).</li>
+                        <li><strong>Extra:</strong> Software padrão que é comumente usado, mas não estritamente necessário para o boot (Xorg, Wayland, Python, gerenciadores de rede).</li>
+                        <li><strong>Community:</strong> Receitas de build e pacotes de software enviados por usuários, auditados quanto à segurança, mas mantidos pela comunidade do Fanne Linux em geral.</li>
+                    </ul>
+                    <p>Se você discorda de como um pacote é compilado nos repositórios oficiais, o Fanne Linux fornece um sistema no estilo 'ports', permitindo que você baixe o código-fonte, modifique as flags de compilação (CFLAGS/CXXFLAGS) e compile o software localmente, otimizado para a arquitetura exata da sua máquina.</p>
+                `
+            }
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            const dict = i18n[lang];
+
+            // Update Navigation
+            document.querySelector('[data-i18n="nav_philosophy"]').textContent = dict.nav_philosophy;
+            document.querySelector('[data-i18n="nav_base"]').textContent = dict.nav_base;
+            document.querySelector('[data-i18n="nav_userspace"]').textContent = dict.nav_userspace;
+            document.querySelector('[data-i18n="nav_kernel"]').textContent = dict.nav_kernel;
+            document.querySelector('[data-i18n="nav_repos"]').textContent = dict.nav_repos;
+
+            // Update Content Titles
+            document.querySelector('[data-i18n="title_philosophy"]').textContent = dict.title_philosophy;
+            document.querySelector('[data-i18n="title_base"]').textContent = dict.title_base;
+            document.querySelector('[data-i18n="title_userspace"]').textContent = dict.title_userspace;
+            document.querySelector('[data-i18n="title_kernel"]').textContent = dict.title_kernel;
+            document.querySelector('[data-i18n="title_repos"]').textContent = dict.title_repos;
+
+            // Update Content Bodies (Using innerHTML to parse the HTML tags inside the dictionary)
+            document.querySelector('[data-i18n="content_philosophy"]').innerHTML = dict.content_philosophy;
+            document.querySelector('[data-i18n="content_base"]').innerHTML = dict.content_base;
+            document.querySelector('[data-i18n="content_userspace"]').innerHTML = dict.content_userspace;
+            document.querySelector('[data-i18n="content_kernel"]').innerHTML = dict.content_kernel;
+            document.querySelector('[data-i18n="content_repos"]').innerHTML = dict.content_repos;
+        }
+
+        // Initialize default language on load
+        window.onload = () => {
+            document.getElementById('languageSelect').value = 'en';
+            changeLanguage();
+        };
+    </script>
 </body>
 </html>
