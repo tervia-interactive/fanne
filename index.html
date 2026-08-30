@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fanne | Sistema Operacional Base</title>
+    <title>Fanne OS | Base System</title>
     <link rel="icon" type="image/png" href="branding/only_fanne_logo.png">
     <style>
-        /* Variáveis de Tema - Foco em estabilidade e legibilidade técnica */
+        /* Tema Técnico / Brutalista Moderno (2026) */
         :root {
-            --fanne-accent: #0a871d;
-            --bg-page: #f9f9f9;
-            --bg-surface: #ffffff;
-            --text-main: #111111;
-            --text-secondary: #555555;
-            --border-color: #e5e5e5;
-            --mono-font: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            --sans-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --bg-main: #09090b;
+            --bg-panel: #121214;
+            --bg-panel-hover: #1c1c1f;
+            --fanne-green: #12ad2b;
+            --fanne-green-dim: rgba(18, 173, 43, 0.15);
+            --text-primary: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --border-subtle: #27272a;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
         }
 
-        /* Reset e Base */
         * {
             margin: 0;
             padding: 0;
@@ -26,297 +27,347 @@
         }
 
         body {
-            font-family: var(--sans-font);
-            background-color: var(--bg-page);
-            color: var(--text-main);
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        a {
-            color: var(--fanne-accent);
-            text-decoration: none;
-        }
+        /* Tipografia */
+        h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
+        p { color: var(--text-muted); }
+        .mono { font-family: var(--font-mono); }
 
-        a:hover {
-            text-decoration: underline;
-        }
-
-        /* Container Principal */
+        /* Layout Base */
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
-        /* Navegação Minimalista */
-        header.top-nav {
-            background-color: var(--bg-surface);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1.5rem 0;
+        /* Navegação */
+        nav {
+            border-bottom: 1px solid var(--border-subtle);
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .nav-content {
+        .nav-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 70px;
         }
 
-        .logo-container img {
-            height: 32px;
-            display: block;
-        }
-
-        .nav-links {
+        .brand img { height: 28px; display: block; }
+        
+        .sys-status {
             display: flex;
-            gap: 1.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            background: var(--bg-panel);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-subtle);
         }
 
-        /* Seção Hero (Apresentação Direta) */
+        .sys-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--fanne-green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--fanne-green);
+        }
+
+        /* Header / Hero */
         .hero {
-            padding: 6rem 0 4rem;
-            border-bottom: 1px solid var(--border-color);
-            background-color: var(--bg-surface);
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background-image: url('branding/only_fanne_logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.03;
+            pointer-events: none;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            letter-spacing: -0.03em;
-            margin-bottom: 1rem;
-            color: var(--text-main);
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
         }
 
-        .hero p.subtitle {
+        .hero h1 span {
+            color: var(--fanne-green);
+        }
+
+        .hero p {
             font-size: 1.25rem;
-            color: var(--text-secondary);
             max-width: 600px;
             margin-bottom: 2rem;
         }
 
-        /* Terminal/Code Block Simulado */
-        .tech-badge {
-            display: inline-block;
-            background-color: #111;
-            color: #fff;
-            font-family: var(--mono-font);
-            font-size: 0.85rem;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            margin-bottom: 2rem;
-        }
-
-        .tech-badge span {
-            color: var(--fanne-accent);
-        }
-
-        /* Conteúdo Técnico (Verdadeiro e Enxuto) */
-        .content-section {
-            padding: 4rem 0;
-        }
-
-        .grid-2 {
+        /* Grade de Arquitetura */
+        .architecture-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 5rem;
         }
 
-        .content-block h2 {
-            font-size: 1.5rem;
+        .panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            padding: 2rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .panel:hover {
+            background: var(--bg-panel-hover);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 1rem;
-            border-bottom: 2px solid var(--text-main);
-            padding-bottom: 0.5rem;
-            display: inline-block;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 1rem;
         }
 
-        .content-block p {
-            color: var(--text-secondary);
+        .panel-header h3 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .panel-header span {
+            font-size: 0.75rem;
+            color: var(--fanne-green);
+            background: var(--fanne-green-dim);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* Terminal Block */
+        .terminal {
+            background: #000;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 4rem 0;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 0.5rem;
             margin-bottom: 1rem;
         }
 
+        .terminal-header .dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #333;
+        }
+
+        .prompt { color: var(--fanne-green); margin-right: 0.5rem; }
+        .output { color: var(--text-muted); display: block; margin-top: 0.5rem; margin-bottom: 1.5rem; }
+        
         /* Tabela de Especificações */
-        .specs-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1.5rem;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
+        .specs-section {
+            margin-bottom: 5rem;
         }
 
-        .specs-table th, .specs-table td {
-            text-align: left;
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.95rem;
+        .specs-section h2 {
+            margin-bottom: 2rem;
+            font-size: 2rem;
         }
 
-        .specs-table th {
-            width: 40%;
-            color: var(--text-main);
-            font-weight: 600;
-            background-color: #f3f3f3;
+        .spec-row {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .specs-table td {
-            font-family: var(--mono-font);
-            color: var(--text-secondary);
+        .spec-row:first-of-type {
+            border-top: 1px solid var(--border-subtle);
         }
 
-        .specs-table tr:last-child th,
-        .specs-table tr:last-child td {
-            border-bottom: none;
+        .spec-key {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-primary);
         }
 
-        /* Rodapé Escuro e Estável */
+        .spec-value {
+            color: var(--text-muted);
+        }
+
+        /* Footer */
         footer {
-            background-color: #111;
-            color: #888;
-            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border-subtle);
+            padding: 4rem 0;
             margin-top: 4rem;
         }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: end;
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
             gap: 2rem;
-            border-bottom: 1px solid #333;
-            padding-bottom: 2rem;
-            margin-bottom: 2rem;
         }
 
-        .footer-logo img {
-            height: 40px;
-            margin-bottom: 1rem;
-            opacity: 0.9;
+        .footer-brand img {
+            height: 32px;
+            opacity: 0.5;
+            transition: opacity 0.2s;
         }
 
-        .footer-info p {
+        .footer-brand img:hover {
+            opacity: 1;
+        }
+
+        .footer-meta {
+            text-align: right;
             font-size: 0.85rem;
-            margin-bottom: 0.5rem;
+            color: var(--text-muted);
         }
 
-        .copyright {
-            font-size: 0.8rem;
-            text-align: center;
-        }
-
-        /* Responsividade Básica (Sem quebrar layouts) */
         @media (max-width: 768px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .footer-grid {
-                grid-template-columns: 1fr;
-                text-align: left;
-            }
+            .hero h1 { font-size: 2.5rem; }
+            .spec-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 1rem 0; }
+            .sys-status { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <header class="top-nav">
-        <div class="container nav-content">
-            <a href="/" class="logo-container">
-                <img src="branding/fanne_black.png" alt="Fanne">
-            </a>
-            <nav class="nav-links">
-                <a href="#sobre">Sobre o Projeto</a>
-                <a href="#specs">Especificações</a>
-                <!-- Link para documentação removido até que ela exista. Evitando falsas promessas. -->
-            </nav>
+    <nav>
+        <div class="container nav-inner">
+            <div class="brand">
+                <img src="branding/fanne_white.png" alt="Fanne OS">
+            </div>
+            <div class="sys-status mono">
+                BUILD: 2026.Q3 | CORE_SIZE: 520MB
+            </div>
         </div>
-    </header>
-
-    <section class="hero">
-        <div class="container">
-            <div class="tech-badge"><span>$</span> base-system --size=520MB</div>
-            <h1>O essencial.</h1>
-            <p class="subtitle">
-                O Fanne é um sistema operacional base focado no estritamente necessário. Projetado pela Tervia Interactive para ser uma fundação enxuta, estável e livre de bloatware.
-            </p>
-        </div>
-    </section>
+    </nav>
 
     <main class="container">
-        <section class="content-section" id="sobre">
-            <div class="grid-2">
-                <div class="content-block">
-                    <h2>Filosofia do Sistema</h2>
-                    <p>
-                        Sistemas operacionais modernos frequentemente entregam gigabytes de serviços e interfaces gráficas que o usuário nunca solicitou. O Fanne segue o caminho oposto.
-                    </p>
-                    <p>
-                        Entregamos uma infraestrutura mínima de funcionamento. A partir da base instalada, a decisão do que deve rodar, qual interface usar (ou se haverá uma) e quais serviços iniciar é inteiramente do administrador. 
-                    </p>
+        <section class="hero">
+            <h1>Menos abstração.<br><span>520MB de controle puro.</span></h1>
+            <p>O Fanne é uma fundação de sistema operacional desenvolvida pela Tervia Interactive. Sem interfaces gráficas forçadas, sem bloatware em background. Apenas o hardware e as suas decisões.</p>
+        </section>
+
+        <section class="architecture-grid">
+            <div class="panel">
+                <div class="panel-header">
+                    <h3 class="mono">/boot & Init</h3>
+                    <span class="mono">CORE</span>
                 </div>
-                
-                <div class="content-block">
-                    <h2>Status de Desenvolvimento</h2>
-                    <p>
-                        O Fanne encontra-se em desenvolvimento ativo pela Tervia Interactive em 2026. A infraestrutura de pacotes e o sistema de inicialização estão sendo otimizados para garantir que a pegada inicial no disco permaneça no limite estrito arquitetado.
-                    </p>
-                    <p>
-                        <em>Nota: A documentação oficial da API do sistema e o manual do usuário estão sendo redigidos e serão publicados no repositório assim que a build principal atingir maturidade estável.</em>
-                    </p>
+                <p>Processo de inicialização estritamente linear. O sistema levanta apenas os daemons definidos pelo usuário no arquivo de configuração base. Nada roda escondido; se está na memória, foi você quem chamou.</p>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <h3 class="mono">Ambiente TTY</h3>
+                    <span class="mono">INTERFACE</span>
                 </div>
+                <p>O Fanne não possui servidor de display (X11/Wayland) pré-instalado. Você recebe um console POSIX limpo. Ideal para servidores, sistemas embarcados ou para montar sua própria stack gráfica (Window Manager) do zero.</p>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h3 class="mono">Gestão de Pacotes</h3>
+                    <span class="mono">SYS</span>
+                </div>
+                <p>Gerenciamento de dependências cirúrgico, sem instalar pacotes "recomendados" automaticamente. O repositório oficial da Tervia garante binários otimizados que respeitam o limite de footprint da base.</p>
             </div>
         </section>
 
-        <section class="content-section" id="specs">
-            <div class="content-block" style="width: 100%;">
-                <h2>Especificações Técnicas da Base</h2>
-                <p>Detalhes referentes à imagem de instalação mínima padronizada.</p>
+        <section class="terminal mono">
+            <div class="terminal-header">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div>
+                <span class="prompt">root@fanne:~#</span> df -h /
+                <span class="output">
+                Filesystem      Size  Used Avail Use% Mounted on<br>
+                /dev/sda1       10G   520M  9.5G   5% /
+                </span>
                 
-                <table class="specs-table">
-                    <tbody>
-                        <tr>
-                            <th>Tamanho da Base (Instalação)</th>
-                            <td>~ 520 MB</td>
-                        </tr>
-                        <tr>
-                            <th>Desenvolvedor</th>
-                            <td>Tervia Interactive</td>
-                        </tr>
-                        <tr>
-                            <th>Ano de Lançamento/Build</th>
-                            <td>2026</td>
-                        </tr>
-                        <tr>
-                            <th>Foco Principal</th>
-                            <td>Ambiente base minimalista, controle total do usuário</td>
-                        </tr>
-                        <tr>
-                            <th>Repositório de Código</th>
-                            <td><!-- Adicione o link real do Github aqui --> [ Aguardando Publicação Oficial ]</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <span class="prompt">root@fanne:~#</span> uname -r
+                <span class="output">Fanne-Core-6.x-x86_64-Tervia</span>
+
+                <span class="prompt">root@fanne:~#</span> free -m
+                <span class="output">
+                              total        used        free      shared  buff/cache   available<br>
+                Mem:           8192          64        7980           0         148        8002
+                </span>
+            </div>
+        </section>
+
+        <section class="specs-section">
+            <h2>Anatomia do Sistema</h2>
+            
+            <div class="spec-row">
+                <div class="spec-key">Tamanho Padrão (ISO/Instalação)</div>
+                <div class="spec-value">Exatos 520 MB (Pode variar ligeiramente dependendo do particionamento de swap e firmware de rede incluso).</div>
+            </div>
+
+            <div class="spec-row">
+                <div class="spec-key">Coreutils & Userland</div>
+                <div class="spec-value">Implementação enxuta, fornecendo as ferramentas GNU essenciais (ls, grep, awk, sed) para administração do sistema sem duplicidade de binários.</div>
+            </div>
+
+            <div class="spec-row">
+                <div class="spec-key">Sistemas de Arquivos</div>
+                <div class="spec-value">Suporte nativo a ext4 (padrão) e ferramentas básicas para montagem de partições FAT32/vfat no boot (EFI).</div>
+            </div>
+
+            <div class="spec-row">
+                <div class="spec-key">Documentação</div>
+                <div class="spec-value">A documentação da API e as man-pages da versão 2026 estão sendo unificadas internamente pela Tervia Interactive e estarão disponíveis no repositório final. O sistema acompanha um guia de `help` offline básico.</div>
+            </div>
+            
+            <div class="spec-row">
+                <div class="spec-key">Desenvolvedor</div>
+                <div class="spec-value">Tervia Interactive (Ano Base de Desenvolvimento: 2026).</div>
             </div>
         </section>
     </main>
 
     <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-logo">
-                    <img src="branding/fanne_white.png" alt="Fanne by Tervia">
-                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem; max-width: 300px;">
-                        Uma fundação de sistema operacional criada para eficiência, transparência e controle absoluto.
-                    </p>
-                </div>
-                <div class="footer-info">
-                    <p><strong>Desenvolvido por:</strong> Tervia Interactive</p>
-                    <p><strong>Status:</strong> Em desenvolvimento ativo</p>
-                </div>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <img src="branding/fanne_white.png" alt="Fanne">
             </div>
-            <div class="copyright">
-                &copy; 2026 Tervia Interactive. Todos os direitos reservados.
+            <div class="footer-meta mono">
+                &copy; 2026 Tervia Interactive.<br>
+                Fanne OS is an independent project.
             </div>
         </div>
     </footer>
