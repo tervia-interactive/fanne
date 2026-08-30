@@ -3,583 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fanne Linux | Tervia Interactive</title>
+    <title>Fanne | Sistema Operacional Base</title>
     <link rel="icon" type="image/png" href="branding/only_fanne_logo.png">
     <style>
-        /* Estética "Aero / Profissional 2010s" - Temática Clara, Vidro e Gradientes */
+        /* Variáveis de Tema - Foco em estabilidade e legibilidade técnica */
         :root {
-            --fanne-green: #0a871d;
-            --fanne-green-light: #12ad2b;
-            --fanne-green-dark: #065c13;
-            --text-main: #1a1a1a;
-            --text-muted: #4a4a4a;
-            --bg-base: #eef2f5;
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.9);
-            --glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            --button-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4);
+            --fanne-accent: #0a871d;
+            --bg-page: #f9f9f9;
+            --bg-surface: #ffffff;
+            --text-main: #111111;
+            --text-secondary: #555555;
+            --border-color: #e5e5e5;
+            --mono-font: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            --sans-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
+        /* Reset e Base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: var(--bg-base);
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(18, 173, 43, 0.08), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(37, 99, 235, 0.05), transparent 25%);
+            font-family: var(--sans-font);
+            background-color: var(--bg-page);
             color: var(--text-main);
-            line-height: 1.5;
-            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Navegação Clássica & Translúcida --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            z-index: 1000;
-            padding: 0.8rem 2rem;
+        a {
+            color: var(--fanne-accent);
+            text-decoration: none;
         }
 
-        .nav-container {
-            max-width: 1200px;
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container Principal */
+        .container {
+            max-width: 900px;
             margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navegação Minimalista */
+        header.top-nav {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+        }
+
+        .nav-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo img {
-            height: 38px;
-            vertical-align: middle;
+        .logo-container img {
+            height: 32px;
+            display: block;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
-            list-style: none;
-            align-items: center;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.8);
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--fanne-green);
-        }
-
-        /* Seletor de Idioma */
-        .lang-btn {
-            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 1px solid #ced4da;
-            color: var(--text-main);
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            box-shadow: inset 0 1px 0 #fff;
-        }
-
-        .lang-btn:hover {
-            background: linear-gradient(180deg, #fff 0%, #f8f9fa 100%);
-        }
-
-        /* --- Hero Section --- */
+        /* Seção Hero (Apresentação Direta) */
         .hero {
-            padding: 10rem 2rem 6rem;
-            text-align: center;
-            position: relative;
-            background: url('branding/only_fanne_logo.png') no-repeat center center;
-            background-size: 600px;
-            background-blend-mode: overlay;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(238, 242, 245, 0.85); /* Fundo branco/azulado para ofuscar a marca d'água */
-            z-index: -1;
-        }
-
-        .hero-content {
-            max-width: 900px;
-            margin: 0 auto;
+            padding: 6rem 0 4rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
         }
 
         .hero h1 {
-            font-size: 3.2rem;
-            color: var(--text-main);
+            font-size: 3.5rem;
+            letter-spacing: -0.03em;
             margin-bottom: 1rem;
-            letter-spacing: -0.5px;
-            text-shadow: 0 2px 4px rgba(255,255,255,0.8);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 2.5rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 0.8rem 2rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary {
-            background: linear-gradient(180deg, var(--fanne-green-light) 0%, var(--fanne-green) 100%);
-            border: 1px solid var(--fanne-green-dark);
-            color: white;
-            box-shadow: var(--button-shadow);
-            text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(180deg, #1bd939 0%, var(--fanne-green-light) 100%);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(180deg, #ffffff 0%, #eef2f5 100%);
-            border: 1px solid #b0c0cf;
             color: var(--text-main);
-            box-shadow: var(--button-shadow);
         }
 
-        .btn-secondary:hover {
-            background: #ffffff;
-            border-color: #8da4b8;
+        .hero p.subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 2rem;
         }
 
-        /* --- Technical Specs Section (Glass Cards) --- */
-        .specs {
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-header h2 {
-            font-size: 2.2rem;
-            color: var(--text-main);
-            border-bottom: 2px solid var(--fanne-green);
+        /* Terminal/Code Block Simulado */
+        .tech-badge {
             display: inline-block;
-            padding-bottom: 0.5rem;
+            background-color: #111;
+            color: #fff;
+            font-family: var(--mono-font);
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
         }
 
-        .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
+        .tech-badge span {
+            color: var(--fanne-accent);
         }
 
-        .glass-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: var(--glass-shadow);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+        /* Conteúdo Técnico (Verdadeiro e Enxuto) */
+        .content-section {
+            padding: 4rem 0;
         }
 
-        .glass-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--fanne-green-dark);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .glass-card p, .glass-card ul {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .glass-card ul {
-            list-style-position: inside;
-            margin-top: 0.5rem;
-        }
-
-        .glass-card li {
-            margin-bottom: 0.4rem;
-        }
-
-        /* --- Architecture & Details --- */
-        .architecture {
-            background: white;
-            border-top: 1px solid #d1d9e0;
-            border-bottom: 1px solid #d1d9e0;
-            padding: 4rem 2rem;
-        }
-
-        .arch-container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
+            gap: 3rem;
         }
 
-        .arch-text h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .arch-text p {
+        .content-block h2 {
+            font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: var(--text-muted);
-        }
-
-        .req-box {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            padding: 1.5rem;
-            border-radius: 6px;
-        }
-
-        .req-box h4 {
-            margin-bottom: 1rem;
-            color: var(--text-main);
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 2px solid var(--text-main);
             padding-bottom: 0.5rem;
+            display: inline-block;
         }
 
-        /* --- Downloads Table --- */
-        .download-section {
-            padding: 5rem 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
+        .content-block p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
         }
 
-        .download-table {
+        /* Tabela de Especificações */
+        .specs-table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-radius: 6px;
-            overflow: hidden;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
         }
 
-        .download-table th, .download-table td {
-            padding: 1rem;
+        .specs-table th, .specs-table td {
             text-align: left;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .download-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        .download-table td {
-            color: var(--text-muted);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
             font-size: 0.95rem;
         }
 
-        .download-table tr:last-child td {
+        .specs-table th {
+            width: 40%;
+            color: var(--text-main);
+            font-weight: 600;
+            background-color: #f3f3f3;
+        }
+
+        .specs-table td {
+            font-family: var(--mono-font);
+            color: var(--text-secondary);
+        }
+
+        .specs-table tr:last-child th,
+        .specs-table tr:last-child td {
             border-bottom: none;
         }
 
-        /* --- Footer --- */
+        /* Rodapé Escuro e Estável */
         footer {
-            background: #1a1d20;
-            color: #a0aab5;
-            padding: 3rem 2rem;
-            border-top: 4px solid var(--fanne-green);
+            background-color: #111;
+            color: #888;
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
         }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
             gap: 2rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
         }
 
         .footer-logo img {
-            height: 45px;
+            height: 40px;
+            margin-bottom: 1rem;
             opacity: 0.9;
         }
 
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
+        .footer-info p {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
         }
 
-        .footer-links a {
-            color: #d1d9e0;
-            text-decoration: none;
-            font-size: 0.9rem;
+        .copyright {
+            font-size: 0.8rem;
+            text-align: center;
         }
 
-        .footer-links a:hover {
-            color: white;
-        }
-
+        /* Responsividade Básica (Sem quebrar layouts) */
         @media (max-width: 768px) {
-            .arch-container { grid-template-columns: 1fr; gap: 2rem; }
-            .nav-links { display: none; }
-            .hero h1 { font-size: 2.2rem; }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: left;
+            }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <a href="#" class="logo">
-                <img src="branding/fanne_black.png" alt="Fanne Linux">
+
+    <header class="top-nav">
+        <div class="container nav-content">
+            <a href="/" class="logo-container">
+                <img src="branding/fanne_black.png" alt="Fanne">
             </a>
-            <ul class="nav-links">
-                <li><a href="#specs" data-i18n="navSpecs">Especificações</a></li>
-                <li><a href="#architecture" data-i18n="navArch">Arquitetura</a></li>
-                <li><a href="#download" data-i18n="navDownload">Download</a></li>
-                <li>
-                    <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
-                </li>
-            </ul>
+            <nav class="nav-links">
+                <a href="#sobre">Sobre o Projeto</a>
+                <a href="#specs">Especificações</a>
+                <!-- Link para documentação removido até que ela exista. Evitando falsas promessas. -->
+            </nav>
         </div>
-    </nav>
+    </header>
 
     <section class="hero">
-        <div class="hero-content">
-            <h1 data-i18n="heroTitle">Controle de Baixo Nível. Interface Impecável.</h1>
-            <p data-i18n="heroSubtitle">O Fanne Linux é um sistema operacional projetado pela Tervia Interactive, combinando um kernel rigorosamente otimizado com um ambiente gráfico compositado moderno e fluído.</p>
-            <div class="cta-buttons">
-                <a href="https://sourceforge.net/p/fanne-linux/" target="_blank" class="btn btn-primary" data-i18n="btnIso">Baixar ISO (x86_64)</a>
-                <a href="https://github.com/tervia-interactive/fanne-linux" target="_blank" class="btn btn-secondary" data-i18n="btnSource">Código Fonte</a>
-            </div>
+        <div class="container">
+            <div class="tech-badge"><span>$</span> base-system --size=520MB</div>
+            <h1>O essencial.</h1>
+            <p class="subtitle">
+                O Fanne é um sistema operacional base focado no estritamente necessário. Projetado pela Tervia Interactive para ser uma fundação enxuta, estável e livre de bloatware.
+            </p>
         </div>
     </section>
 
-    <section class="specs" id="specs">
-        <div class="section-header">
-            <h2 data-i18n="specsTitle">Especificações do Sistema</h2>
-        </div>
-        <div class="specs-grid">
-            <div class="glass-card">
-                <h3 data-i18n="spec1Title">🔧 Kernel & Core</h3>
-                <p data-i18n="spec1Desc">Construído sobre uma stack Linux sólida, com configurações de compilação direcionadas a baixa latência e máxima responsividade em hardware i386 e x86_64. Sem abstrações desnecessárias, dando ao usuário controle real sobre o hardware.</p>
+    <main class="container">
+        <section class="content-section" id="sobre">
+            <div class="grid-2">
+                <div class="content-block">
+                    <h2>Filosofia do Sistema</h2>
+                    <p>
+                        Sistemas operacionais modernos frequentemente entregam gigabytes de serviços e interfaces gráficas que o usuário nunca solicitou. O Fanne segue o caminho oposto.
+                    </p>
+                    <p>
+                        Entregamos uma infraestrutura mínima de funcionamento. A partir da base instalada, a decisão do que deve rodar, qual interface usar (ou se haverá uma) e quais serviços iniciar é inteiramente do administrador. 
+                    </p>
+                </div>
+                
+                <div class="content-block">
+                    <h2>Status de Desenvolvimento</h2>
+                    <p>
+                        O Fanne encontra-se em desenvolvimento ativo pela Tervia Interactive em 2026. A infraestrutura de pacotes e o sistema de inicialização estão sendo otimizados para garantir que a pegada inicial no disco permaneça no limite estrito arquitetado.
+                    </p>
+                    <p>
+                        <em>Nota: A documentação oficial da API do sistema e o manual do usuário estão sendo redigidos e serão publicados no repositório assim que a build principal atingir maturidade estável.</em>
+                    </p>
+                </div>
             </div>
-            <div class="glass-card">
-                <h3 data-i18n="spec2Title">🪟 Interface Aero & Compositor</h3>
-                <p data-i18n="spec2Desc">O ambiente de desktop utiliza aceleração por hardware nativa para gerenciar física de janelas e efeitos visuais avançados (como refração de vidro e transparências Blur/Aero), mantendo o footprint de RAM surpreendentemente baixo.</p>
-            </div>
-            <div class="glass-card">
-                <h3 data-i18n="spec3Title">🛡️ Segurança & Execução</h3>
-                <p data-i18n="spec3Desc">Políticas estritas de permissão e gerenciamento seguro de binários. Projetado para mitigar ameaças modernas no nível do sistema, com suporte nativo a ferramentas rigorosas de análise e contenção de pacotes.</p>
-            </div>
-            <div class="glass-card">
-                <h3 data-i18n="spec4Title">⚙️ Ferramentas de Desenvolvedor</h3>
-                <p data-i18n="spec4Desc">Pronto para desenvolvimento de sistemas. Inclui nativamente compiladores C/C++ (GCC/Clang), Make, GDB, manipuladores de headers ELF/Multiboot, e dependências para programação em Assembly.</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="architecture" id="architecture">
-        <div class="arch-container">
-            <div class="arch-text">
-                <h2 data-i18n="archTitle">Design Orientado ao Profissional</h2>
-                <p data-i18n="archDesc1">A Tervia Interactive desenvolveu o Fanne Linux rejeitando a tendência atual de sistemas pesados e interfaces planificadas ("flat"). Retornamos aos princípios de design de software limpo, onde hierarquia visual, contraste e eficiência térmica da CPU caminham juntos.</p>
-                <p data-i18n="archDesc2">O sistema de arquivos raiz é otimizado estruturalmente para garantir tempos de boot ultrarrápidos, enquanto o ecossistema de pacotes garante que você receba apenas dependências puras, sem bloatware integrado ou serviços ocultos rodando em background.</p>
+        <section class="content-section" id="specs">
+            <div class="content-block" style="width: 100%;">
+                <h2>Especificações Técnicas da Base</h2>
+                <p>Detalhes referentes à imagem de instalação mínima padronizada.</p>
+                
+                <table class="specs-table">
+                    <tbody>
+                        <tr>
+                            <th>Tamanho da Base (Instalação)</th>
+                            <td>~ 520 MB</td>
+                        </tr>
+                        <tr>
+                            <th>Desenvolvedor</th>
+                            <td>Tervia Interactive</td>
+                        </tr>
+                        <tr>
+                            <th>Ano de Lançamento/Build</th>
+                            <td>2026</td>
+                        </tr>
+                        <tr>
+                            <th>Foco Principal</th>
+                            <td>Ambiente base minimalista, controle total do usuário</td>
+                        </tr>
+                        <tr>
+                            <th>Repositório de Código</th>
+                            <td><!-- Adicione o link real do Github aqui --> [ Aguardando Publicação Oficial ]</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="req-box">
-                <h4 data-i18n="reqTitle">Requisitos de Hardware</h4>
-                <ul>
-                    <li data-i18n="req1"><strong>Arquitetura:</strong> Multi-core x86_64 (Suporte legacy i686 dependendo da build)</li>
-                    <li data-i18n="req2"><strong>Memória RAM:</strong> 2GB Mínimo (4GB Recomendado para efeitos gráficos completos)</li>
-                    <li data-i18n="req3"><strong>Armazenamento:</strong> 15GB de espaço livre (Particionamento ext4/btrfs recomendado)</li>
-                    <li data-i18n="req4"><strong>Gráficos:</strong> Placa compatível com OpenGL 2.0+ (VBE fallback disponível)</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section class="download-section" id="download">
-        <div class="section-header">
-            <h2 data-i18n="downTitle">Obtenha o Fanne Linux</h2>
-        </div>
-        <table class="download-table">
-            <thead>
-                <tr>
-                    <th data-i18n="thVersion">Versão</th>
-                    <th data-i18n="thArch">Arquitetura</th>
-                    <th data-i18n="thSize">Tamanho</th>
-                    <th data-i18n="thLink">Download</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Fanne Linux (Estável)</td>
-                    <td>x86_64 / amd64</td>
-                    <td>~1.8 GB</td>
-                    <td><a href="https://sourceforge.net/p/fanne-linux/" style="color: var(--fanne-green); font-weight: 600;">ISO Imagem</a></td>
-                </tr>
-                <tr>
-                    <td>Fanne Source Tree</td>
-                    <td>Multiarch</td>
-                    <td>-</td>
-                    <td><a href="https://github.com/tervia-interactive/fanne-linux" style="color: var(--fanne-green); font-weight: 600;">GitHub Repo</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+        </section>
+    </main>
 
     <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="branding/fanne_white.png" alt="Fanne Linux Branco">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-logo">
+                    <img src="branding/fanne_white.png" alt="Fanne by Tervia">
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem; max-width: 300px;">
+                        Uma fundação de sistema operacional criada para eficiência, transparência e controle absoluto.
+                    </p>
+                </div>
+                <div class="footer-info">
+                    <p><strong>Desenvolvido por:</strong> Tervia Interactive</p>
+                    <p><strong>Status:</strong> Em desenvolvimento ativo</p>
+                </div>
             </div>
-            <div class="footer-links">
-                <a href="https://github.com/tervia-interactive" target="_blank">Tervia Interactive</a>
-                <a href="https://github.com/tervia-interactive/fanne-linux" target="_blank" data-i18n="footDocs">Documentação</a>
-                <a href="#" data-i18n="footLicense">Licença GPLv3</a>
-            </div>
-            <div style="font-size: 0.85rem;" data-i18n="copyright">
-                © 2024 Tervia Interactive. Todos os direitos reservados.
+            <div class="copyright">
+                &copy; 2026 Tervia Interactive. Todos os direitos reservados.
             </div>
         </div>
     </footer>
 
-    <script>
-        // Dicionário focado no aspecto técnico (PT/EN base)
-        const translations = {
-            pt: {
-                navSpecs: "Especificações",
-                navArch: "Arquitetura",
-                navDownload: "Download",
-                heroTitle: "Controle de Baixo Nível. Interface Impecável.",
-                heroSubtitle: "O Fanne Linux é um sistema operacional projetado pela Tervia Interactive, combinando um kernel rigorosamente otimizado com um ambiente gráfico compositado moderno e fluído.",
-                btnIso: "Baixar ISO (x86_64)",
-                btnSource: "Código Fonte",
-                specsTitle: "Especificações do Sistema",
-                spec1Title: "🔧 Kernel & Core",
-                spec1Desc: "Construído sobre uma stack Linux sólida, com configurações de compilação direcionadas a baixa latência e máxima responsividade em hardware i386 e x86_64. Sem abstrações desnecessárias, dando ao usuário controle real sobre o hardware.",
-                spec2Title: "🪟 Interface Aero & Compositor",
-                spec2Desc: "O ambiente de desktop utiliza aceleração por hardware nativa para gerenciar física de janelas e efeitos visuais avançados (como refração de vidro e transparências Blur/Aero), mantendo o footprint de RAM surpreendentemente baixo.",
-                spec3Title: "🛡️ Segurança & Execução",
-                spec3Desc: "Políticas estritas de permissão e gerenciamento seguro de binários. Projetado para mitigar ameaças modernas no nível do sistema, com suporte nativo a ferramentas rigorosas de análise e contenção de pacotes.",
-                spec4Title: "⚙️ Ferramentas de Desenvolvedor",
-                spec4Desc: "Pronto para desenvolvimento de sistemas. Inclui nativamente compiladores C/C++ (GCC/Clang), Make, GDB, manipuladores de headers ELF/Multiboot, e dependências para programação em Assembly.",
-                archTitle: "Design Orientado ao Profissional",
-                archDesc1: "A Tervia Interactive desenvolveu o Fanne Linux rejeitando a tendência atual de sistemas pesados e interfaces planificadas (\"flat\"). Retornamos aos princípios de design de software limpo, onde hierarquia visual, contraste e eficiência térmica da CPU caminham juntos.",
-                archDesc2: "O sistema de arquivos raiz é otimizado estruturalmente para garantir tempos de boot ultrarrápidos, enquanto o ecossistema de pacotes garante que você receba apenas dependências puras, sem bloatware integrado ou serviços ocultos rodando em background.",
-                reqTitle: "Requisitos de Hardware",
-                req1: "Arquitetura: Multi-core x86_64 (Suporte legacy i686 dependendo da build)",
-                req2: "Memória RAM: 2GB Mínimo (4GB Recomendado para efeitos gráficos completos)",
-                req3: "Armazenamento: 15GB de espaço livre (Particionamento ext4/btrfs recomendado)",
-                req4: "Gráficos: Placa compatível com OpenGL 2.0+ (VBE fallback disponível)",
-                downTitle: "Obtenha o Fanne Linux",
-                thVersion: "Versão",
-                thArch: "Arquitetura",
-                thSize: "Tamanho",
-                thLink: "Download",
-                footDocs: "Documentação do Kernel",
-                footLicense: "Licença Livre",
-                copyright: "© 2024 Tervia Interactive. Todos os direitos reservados."
-            },
-            en: {
-                navSpecs: "Specifications",
-                navArch: "Architecture",
-                navDownload: "Download",
-                heroTitle: "Low-Level Control. Flawless Interface.",
-                heroSubtitle: "Fanne Linux is an operating system engineered by Tervia Interactive, combining a strictly optimized kernel with a modern, fluid composited graphical environment.",
-                btnIso: "Download ISO (x86_64)",
-                btnSource: "Source Code",
-                specsTitle: "System Specifications",
-                spec1Title: "🔧 Kernel & Core",
-                spec1Desc: "Built upon a solid Linux stack, with compilation targets aimed at low latency and maximum responsiveness on i386 and x86_64 hardware. No unnecessary abstractions, giving the user real control over the hardware.",
-                spec2Title: "🪟 Aero Interface & Compositor",
-                spec2Desc: "The desktop environment utilizes native hardware acceleration to manage window physics and advanced visual effects (such as glass refraction and Blur/Aero transparencies), while keeping the RAM footprint surprisingly low.",
-                spec3Title: "🛡️ Security & Execution",
-                spec3Desc: "Strict permission policies and secure binary management. Designed to mitigate modern threats at the system level, featuring native support for rigorous package containment and analysis tools.",
-                spec4Title: "⚙️ Developer Tools",
-                spec4Desc: "Ready for systems development. Natively includes C/C++ compilers (GCC/Clang), Make, GDB, ELF/Multiboot header handlers, and dependencies for Assembly programming.",
-                archTitle: "Professional-Oriented Design",
-                archDesc1: "Tervia Interactive developed Fanne Linux rejecting the current trend of heavy systems and flat interfaces. We return to the principles of clean software design, where visual hierarchy, contrast, and CPU thermal efficiency walk together.",
-                archDesc2: "The root filesystem is structurally optimized to ensure ultra-fast boot times, while the package ecosystem ensures you receive only pure dependencies, with no integrated bloatware or hidden background services.",
-                reqTitle: "Hardware Requirements",
-                req1: "Architecture: Multi-core x86_64 (Legacy i686 support depending on build)",
-                req2: "RAM Memory: 2GB Minimum (4GB Recommended for full graphical effects)",
-                req3: "Storage: 15GB of free space (ext4/btrfs partitioning recommended)",
-                req4: "Graphics: OpenGL 2.0+ compatible card (VBE fallback available)",
-                downTitle: "Get Fanne Linux",
-                thVersion: "Version",
-                thArch: "Architecture",
-                thSize: "Size",
-                thLink: "Download",
-                footDocs: "Kernel Documentation",
-                footLicense: "Free License",
-                copyright: "© 2024 Tervia Interactive. All rights reserved."
-            }
-        };
-
-        let currentLang = localStorage.getItem('fanne-lang') || 'pt';
-
-        function applyTranslations(lang) {
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    // Mantém a tag <strong> intacta se existir na tradução
-                    if(translations[lang][key].includes("<strong>")) {
-                        element.innerHTML = translations[lang][key];
-                    } else {
-                        element.textContent = translations[lang][key];
-                    }
-                }
-            });
-            document.getElementById('langBtn').textContent = lang === 'pt' ? 'EN' : 'PT';
-        }
-
-        function toggleLang() {
-            currentLang = currentLang === 'pt' ? 'en' : 'pt';
-            localStorage.setItem('fanne-lang', currentLang);
-            applyTranslations(currentLang);
-        }
-
-        // Init
-        document.addEventListener('DOMContentLoaded', () => {
-            applyTranslations(currentLang);
-        });
-    </script>
 </body>
 </html>
